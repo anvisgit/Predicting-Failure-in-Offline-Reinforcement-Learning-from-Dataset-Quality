@@ -1,0 +1,9 @@
+algorithm: cql
+actor_lr: 1.0e-4
+critic_lr: 3.0e-4
+alpha_lr: 1.0e-4
+conservative_weight: 10.0
+n_action_samples: 10
+initial_alpha: 1.0
+alpha_threshold: 10.0
+batch_size: 256
