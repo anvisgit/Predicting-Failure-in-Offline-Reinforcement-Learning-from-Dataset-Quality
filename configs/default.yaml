@@ -1,18 +1,10 @@
-<<<<<<< HEAD
-# Shared hyperparameters across all algorithms
-=======
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
 device: cpu
 seed: 42
 gamma: 0.99
 batch_size: 256
 hidden_dim: 256
 n_layers: 2
-<<<<<<< HEAD
-tau: 0.005          # soft update coefficient
-=======
 tau: 0.005 # soft update coefficient
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
 total_steps: 1000000
 eval_freq: 5000
 eval_episodes: 10

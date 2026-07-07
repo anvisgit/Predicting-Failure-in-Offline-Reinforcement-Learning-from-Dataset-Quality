@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #!/usr/bin/env python
 """
 Main training script for offline RL experiments.
@@ -7,8 +6,6 @@ Examples:
   python scripts/train.py --algorithm cql --env hopper --dataset medium-replay --seed 42
   python scripts/train.py --algorithm iql --env halfcheetah --dataset medium --n_steps 500000
 """
-=======
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
 import argparse
 import json
 import os
@@ -116,6 +113,22 @@ def main():
 
     agent.save(os.path.join(out_dir, "model.pt"))
     logger.finish()
+
+    if results.get("best_environment_score") is not None:
+        print(
+            "\nBest training evaluation: "
+            f"{results['best_environment_score']:.2f} "
+            f"at epoch {results['best_epoch']} / step {results['best_step']}"
+        )
+        if results.get("best_d3rlpy_checkpoint"):
+            print(f"Best d3rlpy checkpoint: {results['best_d3rlpy_checkpoint']}")
+        if results.get("training_history"):
+            final_train_score = results["training_history"][-1].get("environment")
+            if final_train_score is not None and final_train_score < results["best_environment_score"]:
+                print(
+                    "WARNING: final checkpoint is worse than the best training checkpoint. "
+                    "Evaluate the best checkpoint before using the final model."
+                )
 
     print(f"\nFinal normalized score: {results['final_normalized_score']:.2f}")
     print(f"Results saved to: {out_dir}")

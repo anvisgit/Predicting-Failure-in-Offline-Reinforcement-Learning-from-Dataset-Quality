@@ -1,29 +1,10 @@
 #!/usr/bin/env python
-<<<<<<< HEAD
-"""
-Analyze and visualize all experiment results.
-Generates publication-quality figures.
-
-Usage:
-    python scripts/analyze_results.py --results_dir results --output_dir figures
-"""
-=======
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
 import argparse
 import os
 import sys
 from pathlib import Path
 import json
 import pandas as pd
-<<<<<<< HEAD
-
-ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(ROOT))
-
-from src.utils.visualization import plot_failure_curves, plot_dataset_statistics_heatmap
-from src.utils.helpers import ensure_dir
-
-=======
 import glob
 
 
@@ -31,7 +12,6 @@ ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
 from src.utils.visualization import plot_failure_curves, plot_dataset_statistics_heatmap
 from src.utils.helpers import ensure_dir
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
 def parse_args():
     parser = argparse.ArgumentParser(description='Analyze and visualize results')
     parser.add_argument('--results_dir', type=str, default='results')
@@ -39,11 +19,6 @@ def parse_args():
     return parser.parse_args()
 
 def load_degradation_results(results_dir):
-<<<<<<< HEAD
-    """Load all JSON results from degradation study."""
-    import glob
-=======
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
     data = []
     
     pattern = os.path.join(results_dir, 'degradation', '**', 'results.json')
@@ -51,30 +26,13 @@ def load_degradation_results(results_dir):
         try:
             with open(filepath, 'r') as f:
                 res = json.load(f)
-<<<<<<< HEAD
-                
-            # Flatten dict
-            flat = {
-                'algorithm': res.get('algorithm', 'unknown').upper(),
-                'env': res.get('env', 'unknown'),
-                'protocol': res.get('protocol', 'unknown'),
-                'level': res.get('level', 'unknown'),
-                'score': res.get('final_normalized_score', 0.0)
-            }
-=======
             flat = {'algorithm': res.get('algorithm', 'unknown').upper(),'env': res.get('env', 'unknown'),'protocol': res.get('protocol', 'unknown'),'level': res.get('level', 'unknown'),'score': res.get('final_normalized_score', 0.0)}
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
             if 'dataset_stats' in res:
                 for k, v in res['dataset_stats'].items():
                     flat[f'stat_{k}'] = v
             data.append(flat)
         except Exception as e:
-<<<<<<< HEAD
-            print(f"Error reading {filepath}: {e}")
-            
-=======
             print(f"Error reading {filepath}: {e}")   
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
     return data
 
 def main():
@@ -84,10 +42,6 @@ def main():
     # 1. Plot Failure Curves from Degradation Study
     print("Loading degradation results...")
     deg_data = load_degradation_results(args.results_dir)
-<<<<<<< HEAD
-    
-=======
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
     if deg_data:
         print("Plotting failure curves...")
         plot_failure_curves(deg_data, os.path.join(out_dir, 'failure_curves.png'))

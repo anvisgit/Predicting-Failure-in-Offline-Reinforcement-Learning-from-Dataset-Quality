@@ -1,25 +1,9 @@
-<<<<<<< HEAD
-#!/usr/bin/env python
-"""
-Stage 1: Baseline Reproduction
-Runs CQL and IQL on medium-replay for all 3 environments.
-Compares results to published D4RL numbers.
 
-Usage:
-    python scripts/run_baseline.py --n_steps 200000 --seed 42
-"""
-=======
-
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
 import argparse
 import sys
 import os
 from pathlib import Path
 import json
-<<<<<<< HEAD
-
-=======
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
 
@@ -29,14 +13,7 @@ from src.algorithms.iql import IQLAgent
 from src.utils.helpers import set_seed, load_config, ensure_dir
 from src.utils.logger import ExperimentLogger
 
-<<<<<<< HEAD
-PUBLISHED_SCORES = {
-    'cql': {'halfcheetah': 44.0, 'hopper': 86.6, 'walker2d': 74.5},
-    'iql': {'halfcheetah': 47.4, 'hopper': 91.5, 'walker2d': 83.3},
-}
-=======
 PUBLISHED_SCORES = {'cql': {'halfcheetah': 44.0, 'hopper': 86.6, 'walker2d': 74.5},'iql': {'halfcheetah': 47.4, 'hopper': 91.5, 'walker2d': 83.3},}
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Run baseline reproduction for offline RL algorithms')
@@ -84,11 +61,6 @@ def main():
                     eval_freq=args.n_steps // 10, # 10 evaluations
                     logger=logger
                 )
-<<<<<<< HEAD
-                
-                # Run final evaluation
-=======
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
                 from src.metrics.performance import evaluate_and_normalize
                 eval_res = evaluate_and_normalize(env, env_name, agent.predict, n_episodes=10)
                 final_score = eval_res['normalized_score']
@@ -102,11 +74,6 @@ def main():
                 results[algo_name][env_name] = None
             
             logger.finish()
-<<<<<<< HEAD
-            
-    # Print comparison table
-=======
->>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
     print("\n" + "="*60)
     print("Stage 1: Baseline Reproduction Results")
     print("="*60)

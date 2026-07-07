@@ -45,12 +45,26 @@ class CQLAgent(OfflineRLAgent):
         logger,
     ) -> Dict[str, Any]:
         """Train CQL and return a results shell for downstream logging."""
-        results = {"normalized_scores": [], "td_errors": [], "q_values": [], "steps": []}
+        results = {
+            "normalized_scores": [],
+            "td_errors": [],
+            "q_values": [],
+            "steps": [],
+            "training_history": [],
+            "best_step": None,
+            "best_epoch": None,
+            "best_environment_score": None,
+            "best_d3rlpy_checkpoint": None,
+        }
 
-        self._algo.fit(
+        experiment_name = getattr(logger, "run_name", None)
+        history = self._algo.fit(
             self._dataset,
             n_steps=n_steps,
             n_steps_per_epoch=eval_freq,
+            experiment_name=experiment_name,
+            with_timestamp=experiment_name is None,
+            save_interval=1,
             evaluators={
                 "environment": EnvironmentEvaluator(env, n_trials=10),
                 "td_error": TDErrorEvaluator(episodes=self._dataset.episodes[:100]),
@@ -59,6 +73,38 @@ class CQLAgent(OfflineRLAgent):
                 ),
             },
         )
+
+        best_record = None
+        for epoch, metrics in history:
+            step = int(epoch * eval_freq)
+            record = {"epoch": int(epoch), "step": step, **metrics}
+            results["training_history"].append(record)
+            results["steps"].append(step)
+
+            if "environment" in metrics:
+                results["normalized_scores"].append(metrics["environment"])
+                if logger is not None:
+                    logger.log_evaluation(step, {"environment": metrics["environment"]})
+
+                if best_record is None or metrics["environment"] > best_record["environment"]:
+                    best_record = record
+
+            if "td_error" in metrics:
+                results["td_errors"].append(metrics["td_error"])
+            if "q_value" in metrics:
+                results["q_values"].append(metrics["q_value"])
+            if logger is not None:
+                logger.log_metrics(step, metrics)
+
+        if best_record is not None:
+            best_step = best_record["step"]
+            results["best_step"] = best_step
+            results["best_epoch"] = best_record["epoch"]
+            results["best_environment_score"] = best_record["environment"]
+            if experiment_name:
+                results["best_d3rlpy_checkpoint"] = (
+                    f"d3rlpy_logs/{experiment_name}/model_{best_step}.d3"
+                )
         return results
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
