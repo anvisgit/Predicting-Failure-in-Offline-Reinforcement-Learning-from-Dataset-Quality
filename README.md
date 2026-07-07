@@ -1,4 +1,4 @@
-# Offline Reinforcement Learning Research
+﻿# Offline Reinforcement Learning Research
 
 This project implements pipeline for Offline Reinforcement Learning, focusing on Conservative Q-Learning (CQL) and Implicit Q-Learning (IQL) on the D4RL benchmark. The primary research question is: **How does dataset quality and coverage affect the performance and failure modes of conservative offline RL algorithms, and can we predict failure before deployment?**
 
