@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+"""
+Stage 2: Systematic Degradation Study.
+
+Usage:
+    python scripts/run_degradation_study.py --env hopper --protocol coverage --n_steps 100000
+    python scripts/run_degradation_study.py --quick
+"""
 import argparse
 import json
 import sys
@@ -8,7 +16,11 @@ sys.path.insert(0, str(ROOT))
 
 from src.algorithms.cql import CQLAgent
 from src.algorithms.iql import IQLAgent
-from src.data.degradation import (get_coverage_variants,get_noise_variants,get_quality_variants,)
+from src.data.degradation import (
+    get_coverage_variants,
+    get_noise_variants,
+    get_quality_variants,
+)
 from src.data.loader import load_d4rl_dataset
 from src.metrics.dataset_stats import compute_all_stats
 from src.metrics.performance import evaluate_and_normalize
