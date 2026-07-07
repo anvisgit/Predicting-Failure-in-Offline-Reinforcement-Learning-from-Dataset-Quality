@@ -1,19 +1,8 @@
-#!/usr/bin/env python
-"""
-Stage 3: Failure Prediction
-
-Train failure predictor on train environments degradation results.
-Validate on test environment (cross-environment generalization).
-
-Usage:
-    python scripts/run_failure_prediction.py --train_envs halfcheetah hopper --test_env walker2d
-"""
 import argparse
 import sys
 import os
 from pathlib import Path
 import json
-
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
 
