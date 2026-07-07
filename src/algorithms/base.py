@@ -5,8 +5,11 @@ import numpy as np
 
 
 class OfflineRLAgent(ABC):
+    """Abstract base for offline RL algorithm wrappers."""
+
     @abstractmethod
     def build(self, dataset_dict: Dict[str, np.ndarray], env) -> None:
+        """Initialize algorithm with dataset and environment."""
         pass
 
     @abstractmethod
@@ -18,10 +21,12 @@ class OfflineRLAgent(ABC):
         eval_freq: int,
         logger,
     ) -> Dict[str, Any]:
+        """Run training and return collected results."""
         pass
 
     @abstractmethod
     def predict(self, observation: np.ndarray) -> np.ndarray:
+        """Select action for a single observation."""
         pass
 
     @abstractmethod
