@@ -1,0 +1,8 @@
+# Inherits from default.yaml
+algorithm: iql
+actor_lr: 3.0e-4
+critic_lr: 3.0e-4
+value_lr: 3.0e-4
+expectile: 0.7
+weight_temp: 3.0
+max_weight: 100.0
