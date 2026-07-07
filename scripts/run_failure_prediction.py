@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/env python
 """
 Stage 3: Failure Prediction
@@ -8,12 +9,17 @@ Validate on test environment (cross-environment generalization).
 Usage:
     python scripts/run_failure_prediction.py --train_envs halfcheetah hopper --test_env walker2d
 """
+=======
+>>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
 import argparse
 import sys
 import os
 from pathlib import Path
 import json
+<<<<<<< HEAD
 
+=======
+>>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
 

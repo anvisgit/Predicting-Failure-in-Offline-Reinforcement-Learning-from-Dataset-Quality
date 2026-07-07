@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/env python
 """
 Main training script for offline RL experiments.
@@ -6,6 +7,8 @@ Examples:
   python scripts/train.py --algorithm cql --env hopper --dataset medium-replay --seed 42
   python scripts/train.py --algorithm iql --env halfcheetah --dataset medium --n_steps 500000
 """
+=======
+>>>>>>> 61a721dcb2dba975feffcf589db14be640cebc1b
 import argparse
 import json
 import os
