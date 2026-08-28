@@ -11,6 +11,14 @@ Use the bundled runner so each new terminal uses the same venv that already has 
 .\scripts\run.ps1 --algorithm cql --env hopper --dataset medium-replay --n_steps 5000 --device cpu
 ```
 
+Before a full CQL run, use a short diagnostic run to confirm that the logged
+`alpha` remains non-zero. CQL uses d3rlpy's `StandardRewardScaler` and the
+default `alpha_threshold: 10.0` from `configs/cql.yaml`.
+
+```powershell
+.\scripts\run.ps1 --algorithm cql --env hopper --dataset medium-replay --n_steps 20000 --device cpu
+```
+
 For the degradation study, use:
 
 ```powershell
@@ -45,6 +53,39 @@ Then run commands from `C:\Users\Anvi\Desktop\offline-rl-research`.
     *   **Quality Degradation**: Mixing expert and random trajectories.
     *   **Gaussian Noise Injection**: Adding observation noise.
 3. **Failure Prediction**: Building a predictive model to forecast algorithm failure based solely on pre-training dataset statistics.
+
+## Stage 1 Results (pre-fix diagnostic)
+
+The first baseline run used CQL with the old unscaled-reward configuration.
+These figures are retained as a diagnostic record, **not** as valid benchmark
+results. Scores are D4RL normalized returns from the saved final evaluations.
+
+| Algorithm | Environment | Dataset | Final normalized score | Status |
+| --- | --- | --- | ---: | --- |
+| CQL | HalfCheetah | medium-replay | 12.34 | Invalid diagnostic baseline |
+| CQL | Hopper | medium-replay | 8.81 | Invalid diagnostic baseline |
+| CQL | Walker2d | medium-replay | — | Dataset download unavailable at the retired Berkeley host |
+| IQL | all | medium-replay | — | Did not start: incompatible `value_learning_rate` argument |
+
+### Why these results are wrong
+
+The pre-fix CQL configuration used raw rewards with `alpha_threshold: 5.0`.
+On HalfCheetah, the automatically tuned conservative coefficient (`alpha`)
+collapsed from `0.483` at 20k steps to `5.4e-8` at 200k steps. Once alpha is
+effectively zero, the conservative penalty no longer constrains
+out-of-distribution actions. At the same time, estimated Q-values grew to
+about `446`, while the final normalized return was only `12.34`; this mismatch
+is evidence of severe value overestimation rather than a strong policy.
+
+Hopper did not collapse as completely, but alpha still fell below `0.09` by
+180k steps and its Q-values reached roughly `341` despite a final normalized
+return of `8.81`. These runs should therefore not be compared to published CQL
+numbers or used as evidence for the degradation study.
+
+The current CQL configuration corrects the known setup issue by using
+`StandardRewardScaler` and d3rlpy's default `alpha_threshold: 10.0`. Re-run a
+20k-step diagnostic and verify that alpha stays materially above zero before
+running a full baseline.
 
 ## Directory Structure
 

@@ -1,4 +1,4 @@
-from .cql import CQLAgent
-from .iql import IQLAgent
+from .algorithms.cql import CQLAgent
+from .algorithms.iql import IQLAgent
 
 __all__ = ['CQLAgent', 'IQLAgent']

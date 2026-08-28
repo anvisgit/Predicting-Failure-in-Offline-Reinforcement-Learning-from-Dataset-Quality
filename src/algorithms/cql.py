@@ -7,6 +7,7 @@ from d3rlpy.metrics import (
     EnvironmentEvaluator,
     TDErrorEvaluator,
 )
+from d3rlpy.preprocessing import StandardRewardScaler
 
 from .base import OfflineRLAgent
 from ..data.loader import to_d3rlpy_dataset
@@ -24,6 +25,16 @@ class CQLAgent(OfflineRLAgent):
     def build(self, dataset_dict: Dict[str, np.ndarray], env) -> None:
         """Build CQL algorithm from d3rlpy config."""
         self._dataset = to_d3rlpy_dataset(dataset_dict)
+        reward_scaler = None
+        reward_scaler_name = self.config.get("reward_scaler", "standard")
+        if reward_scaler_name == "standard":
+            reward_scaler = StandardRewardScaler()
+        elif reward_scaler_name not in (None, "none"):
+            raise ValueError(
+                "Unsupported reward_scaler "
+                f"'{reward_scaler_name}'. Supported values: 'standard', 'none'."
+            )
+
         self._algo = CQLConfig(
             actor_learning_rate=self.config.get("actor_lr", 1e-4),
             critic_learning_rate=self.config.get("critic_lr", 3e-4),
@@ -33,6 +44,7 @@ class CQLAgent(OfflineRLAgent):
             initial_alpha=self.config.get("initial_alpha", 1.0),
             alpha_threshold=self.config.get("alpha_threshold", 10.0),
             batch_size=self.config.get("batch_size", 256),
+            reward_scaler=reward_scaler,
         ).create(device=self.device)
         self._algo.build_with_dataset(self._dataset)
 

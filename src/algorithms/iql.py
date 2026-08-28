@@ -27,7 +27,6 @@ class IQLAgent(OfflineRLAgent):
         self._algo = IQLConfig(
             actor_learning_rate=self.config.get("actor_lr", 3e-4),
             critic_learning_rate=self.config.get("critic_lr", 3e-4),
-            value_learning_rate=self.config.get("value_lr", 3e-4),
             expectile=self.config.get("expectile", 0.7),
             weight_temp=self.config.get("weight_temp", 3.0),
             max_weight=self.config.get("max_weight", 100.0),

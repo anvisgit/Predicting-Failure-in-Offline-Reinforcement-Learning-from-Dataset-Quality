@@ -33,22 +33,16 @@ ENV_CONFIGS = {
 DATASET_VARIANTS = ["random", "medium", "medium-replay", "medium-expert", "expert"]
 ENVIRONMENTS = ["halfcheetah", "hopper", "walker2d"]
 
+# The original Berkeley RAIL host now redirects to a retired server.  This
+# public mirror contains the D4RL v2 MuJoCo HDF5 files and supports redirects
+# required for direct, unauthenticated downloads.
+HDF5_MIRROR_BASE = "https://huggingface.co/datasets/imone/D4RL/resolve/main"
 HDF5_URLS = {
-    ("halfcheetah", "random"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/halfcheetah_random.hdf5",
-    ("halfcheetah", "medium"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/halfcheetah_medium.hdf5",
-    ("halfcheetah", "medium-replay"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/halfcheetah_mixed.hdf5",
-    ("halfcheetah", "medium-expert"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/halfcheetah_medium_expert.hdf5",
-    ("halfcheetah", "expert"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/halfcheetah_expert.hdf5",
-    ("hopper", "random"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/hopper_random.hdf5",
-    ("hopper", "medium"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/hopper_medium.hdf5",
-    ("hopper", "medium-replay"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/hopper_mixed.hdf5",
-    ("hopper", "medium-expert"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/hopper_medium_expert.hdf5",
-    ("hopper", "expert"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/hopper_expert.hdf5",
-    ("walker2d", "random"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/walker2d_random.hdf5",
-    ("walker2d", "medium"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/walker2d_medium.hdf5",
-    ("walker2d", "medium-replay"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/walker2d_mixed.hdf5",
-    ("walker2d", "medium-expert"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/walker2d_medium_expert.hdf5",
-    ("walker2d", "expert"): "http://rail.eecs.berkeley.edu/datasets/offline_rl/gym_mujoco/walker2d_expert.hdf5",
+    (env, variant): (
+        f"{HDF5_MIRROR_BASE}/{env}_{variant.replace('-', '_')}-v2.hdf5"
+    )
+    for env in ENVIRONMENTS
+    for variant in DATASET_VARIANTS
 }
 
 GYM_ENV_IDS = {
